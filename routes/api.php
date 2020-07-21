@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/home-data', 'IndexController@homeData');
+
 Route::get('/proxy/list', 'ProxyController@list');
 Route::post('/proxy/save', 'ProxyController@save');
 

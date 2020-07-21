@@ -16,7 +16,6 @@ class AcmeshExternal
     }
     /**
      * @return mixed
-     * @throws ExternalException
      */
     public function getVersion()
     {

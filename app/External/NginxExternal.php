@@ -17,7 +17,6 @@ class NginxExternal
 
     /**
      * @return mixed
-     * @throws ExternalException
      */
     public function getVersion()
     {
