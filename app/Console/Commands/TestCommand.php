@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\External\ExternalException;
+use App\External\NginxExternal;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -36,8 +37,11 @@ class TestCommand extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(NginxExternal $nginx)
     {
+
+        $res = $nginx->generateVhost(['seafile.endaosi.com'], 'http://seafile:80', 1);
+        dump($res);
         return 0;
     }
 }

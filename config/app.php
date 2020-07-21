@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // 外部服务类单例注册
+        App\Providers\ExternalServiceProvider::class,
     ],
 
     /*

@@ -1,3 +1,5 @@
 *
 !public/
+!vhost/
 !.gitignore
+!vhost.conf.php

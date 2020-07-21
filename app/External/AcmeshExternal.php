@@ -1,16 +1,12 @@
 <?php
 
-
 namespace App\External;
-
-
-use App\External\Exception\ExternalException;
 
 class AcmeshExternal
 {
     protected $binaryPath;
 
-    public function __construct($binaryPath = 'acme.sh')
+    public function __construct($binaryPath)
     {
         $this->binaryPath = $binaryPath;
     }
