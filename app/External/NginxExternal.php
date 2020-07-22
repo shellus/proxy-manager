@@ -33,7 +33,7 @@ class NginxExternal
     {
         $exec = ExecClass::create($this->binaryPath . ' -s reload')->exec()->checkNotFound();
         if ($exec->getExecResultCode() !== 0) {
-            throw new ExternalException('nginx reload err, result: [' . $exec->getExecResult() . ']');
+            throw new ExternalException('nginx reload err, result: [' . $exec->getOutput() . ']');
         }
     }
     public function buildSSLConf($certPath, $keyPath)
@@ -44,22 +44,17 @@ class NginxExternal
     ssl_dhparam /etc/nginx/ssl-dhparams.pem;";
     }
 
-    public function generateVhost($domains, $targetAddress, $name, $sslConf = '')
+    /**
+     * @param NginxVhost $conf
+     * @return string
+     */
+    public function generateVhost($filename, $conf)
     {
         $data = [
-            'domains' => implode(' ', $domains),
-            'target_address' => $targetAddress,
-            'http_port' => 80,
-            'https_port' => 443,
-            'enable_https' => true,
-            'enable_https_only' => true,
-            'enable_https_hsts' => true,
-            'enable_http2' => true,
-            'cert_path' => '/etc/nginx/acme.sh/seafile.endaosi.com/fullchain.cer',
-            'cert_key_path' => '/etc/nginx/acme.sh/seafile.endaosi.com/seafile.endaosi.com.key',
+            'conf' => $conf,
         ];
         $confString = $this->evaluatePath($data);
-        $path = $this->vhostPath . '/' . $name . '.conf';
+        $path = $this->vhostPath . '/' . $filename . '.conf';
         file_put_contents($path, $confString);
         return $path;
     }
