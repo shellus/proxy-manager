@@ -25,10 +25,11 @@ class ProxyTable extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->comment = '证书';
             $table->increments('id');
-            $table->unsignedInteger('certificate_sign_config_id')->nullable()->comment('证书签发配置ID');
+            $table->unsignedInteger('certificate_config_id')->nullable()->comment('证书签发配置ID');
             $table->unsignedInteger('is_manual_upload')->comment('是否手动上传(手动上传的不续签)');
             $table->dateTime('expires_time')->comment('过期时间');
-            $table->string('path')->comment('证书路径');
+            $table->string('cert_path')->comment('证书路径');
+            $table->string('cert_key_path')->comment('证书私钥路径');
             $table->timestamps();
         });
         Schema::create('certificate_domains', function (Blueprint $table) {
@@ -51,6 +52,9 @@ class ProxyTable extends Migration
             $table->comment = '代理';
             $table->increments('id');
             $table->string('target_address')->comment('原站地址，就算要结构化信息，也可以分割字符串实现');
+
+            $table->unsignedInteger('http_port')->comment('监听端口');
+            $table->unsignedInteger('https_port')->comment('加密监听端口');
 
             $table->unsignedInteger('enable_https')->comment('开关');
             $table->unsignedInteger('enable_https_only')->comment('开关');

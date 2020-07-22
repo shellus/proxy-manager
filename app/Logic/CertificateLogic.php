@@ -20,7 +20,7 @@ class CertificateLogic
             $cert = CertificateModel::findOrFail($request['id']);
         }
         /** @var CertificateModel $cert */
-        $cert->certificate_sign_config_id = null;
+        $cert->certificate_config_id = null;
         $cert->is_manual_upload = true;
         $cert->expires_time = $request['expires_time'];
         $cert->path = $request['path'];

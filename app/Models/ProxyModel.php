@@ -4,18 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
- * App\Models\ProxyModel
+ * \App\Models\ProxyModel
  *
  * @property int $id
  * @property string $target_address 原站地址
- * @property int $enable_https 开关
- * @property int $enable_https_only 开关
- * @property int $enable_https_hsts 开关
- * @property int $enable_http2 开关
- * @property int $certificate_id 证书ID
+ * @property bool $enable_https 开关
+ * @property bool $enable_https_only 开关
+ * @property bool $enable_https_hsts 开关
+ * @property bool $enable_http2 开关
+ * @property int|null $certificate_id 证书ID
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $http_port 监听端口
+ * @property int $https_port 加密监听端口
+ * @property-read \App\Models\CertificateModel|null $certificate
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProxyDomainModel[] $domains
+ * @property-read int|null $domains_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel query()
@@ -25,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereEnableHttps($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereEnableHttpsHsts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereEnableHttpsOnly($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereHttpPort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereHttpsPort($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereTargetAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereUpdatedAt($value)
@@ -43,5 +51,9 @@ class ProxyModel extends Model
     public function domains()
     {
         return $this->hasMany(ProxyDomainModel::class, 'proxy_id', 'id');
+    }
+    public function certificate()
+    {
+        return $this->belongsTo(CertificateModel::class, 'certificate_id', 'id');
     }
 }
