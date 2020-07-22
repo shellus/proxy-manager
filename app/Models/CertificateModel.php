@@ -1,17 +1,14 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * \App\Models\CertificateModel
  *
  * @property int $id
+ * @property string $main_domain 证书主域名
  * @property int|null $certificate_config_id 证书签发配置ID
  * @property int $is_manual_upload 是否手动上传(手动上传的不续签)
  * @property string $expires_time 过期时间
- * @property string $path 证书路径
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $cert_path 证书路径
@@ -30,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class CertificateModel extends Model
+class CertificateModel extends BaseModel
 {
     protected $table = 'certificates';
     protected $guarded = ['id'];

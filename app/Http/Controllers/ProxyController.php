@@ -21,4 +21,14 @@ class ProxyController extends Controller
         $data = (new ProxyLogic())->save($request, empty($request['id']));
         return $this->success($data);
     }
+    public function remove(Request $request)
+    {
+        $data = (new ProxyLogic())->remove($request);
+        return $this->success($data);
+    }
+    public function generateConf(Request $request)
+    {
+        $data = app()->call([(new ProxyLogic()), 'generateConf'], ['request' => $request]);
+        return $this->success($data);
+    }
 }

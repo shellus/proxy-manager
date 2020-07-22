@@ -19,9 +19,15 @@ class CertificateConfigLogic
         } else {
             $config = CertificateConfigModel::findOrFail($request['id']);
         }
+        $config->name = $request['name'];
         $config->type = $request['type'];
         $config->payload = $request['payload'];
         $config->save();
         return $config;
+    }
+    public function remove($request)
+    {
+        $config = CertificateConfigModel::findOrFail($request['id']);
+        $config->delete();
     }
 }

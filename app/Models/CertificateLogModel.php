@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\CertificateLogModel
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateLogModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class CertificateLogModel extends Model
+class CertificateLogModel extends BaseModel
 {
     protected $table = 'certificate_log';
     protected $guarded = ['id'];

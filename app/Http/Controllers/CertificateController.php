@@ -20,6 +20,11 @@ class CertificateController extends Controller
         $data = (new CertificateLogic())->list($request);
         return $this->success($data);
     }
+    public function selectList(Request $request)
+    {
+        $data = (new CertificateLogic())->selectList($request);
+        return $this->success($data);
+    }
     public function save(Request $request)
     {
         $data = (new CertificateLogic())->manualUploadSave($request, empty($request['id']));

@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-
 /**
  * \App\Models\ProxyModel
  *
@@ -38,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class ProxyModel extends Model
+class ProxyModel extends BaseModel
 {
     protected $table = 'proxy';
     protected $guarded = ['id'];

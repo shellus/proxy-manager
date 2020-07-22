@@ -25,4 +25,9 @@ class CertificateConfigController extends Controller
         $data = (new CertificateConfigLogic())->save($request, empty($request['id']));
         return $this->success($data);
     }
+    public function remove(Request $request)
+    {
+        $data = (new CertificateConfigLogic())->remove($request);
+        return $this->success($data);
+    }
 }

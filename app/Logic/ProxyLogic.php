@@ -4,6 +4,8 @@
 namespace App\Logic;
 
 
+use App\External\NginxExternal;
+use App\External\NginxVhost;
 use App\Models\CertificateModel;
 use App\Models\ProxyDomainModel;
 use App\Models\ProxyModel;
@@ -14,28 +16,39 @@ class ProxyLogic
     {
         return ProxyModel::with(['domains'])->orderBy('id', 'desc')->paginate();
     }
+    public function remove($request)
+    {
+        $proxy = ProxyModel::findOrFail($request['id']);
+        $proxy->delete();
+    }
+    public function generateConf($request, NginxExternal $nginx)
+    {
+        $proxy = ProxyModel::findOrFail($request['id']);
+        $conf = NginxVhost::fromModel($proxy);
+        $nginx->generateVhost($proxy->id, $conf);
+        $nginx->reload();
+    }
 
-    public function save($data, $isCreate)
+    public function save($request, $isCreate)
     {
         if ($isCreate) {
             $proxy = new ProxyModel();
         } else {
-            $proxy = ProxyModel::findOrFail($data['id']);
+            $proxy = ProxyModel::findOrFail($request['id']);
         }
-        $proxy->target_address = $data['target_address'];
-        $proxy->enable_https = $data['enable_https'];
-        $proxy->enable_https_only = $data['enable_https_only'];
-        $proxy->enable_https_hsts = $data['enable_https_hsts'];
-        $proxy->enable_http2 = $data['enable_http2'];
-        if ($data['certificate_id'] === CertificateModel::CERT_TYPE_WEBROOT) {
-            // todo 实时申请一个(还是做成页面上生成？)
-            $data['certificate_id'] = 123;
-        }
-        $proxy->certificate_id = $data['certificate_id'];
+        $proxy->name = $request['name'];
+        $proxy->http_port = $request['http_port'];
+        $proxy->https_port = $request['https_port'];
+        $proxy->target_address = $request['target_address'];
+        $proxy->enable_https = $request['enable_https'];
+        $proxy->enable_https_only = $request['enable_https_only'];
+        $proxy->enable_https_hsts = $request['enable_https_hsts'];
+        $proxy->enable_http2 = $request['enable_http2'];
+        $proxy->certificate_id = $request['certificate_id'];
         $proxy->save();
 
         $domainIds = [];
-        foreach ($data['domains'] as $domainData) {
+        foreach ($request['domains'] as $domainData) {
 
             if (!empty($domainData['id'])){
                 $domain = ProxyDomainModel::findOrFail($domainData['id']);

@@ -12,6 +12,10 @@ class CertificateLogic
     {
         return CertificateModel::orderBy('id', 'desc')->paginate();
     }
+    public function selectList($request)
+    {
+        return CertificateModel::orderBy('id', 'desc')->select(['id', 'main_domain as name'])->get();
+    }
     public function manualUploadSave($request, $isCreate)
     {
         if ($isCreate) {
@@ -23,7 +27,9 @@ class CertificateLogic
         $cert->certificate_config_id = null;
         $cert->is_manual_upload = true;
         $cert->expires_time = $request['expires_time'];
-        $cert->path = $request['path'];
+        $cert->cert_path = $request['cert_path'];
+        $cert->cert_key_path = $request['cert_key_path'];
+        $cert->main_domain = $request['main_domain'];
         $cert->save();
         return $cert;
     }

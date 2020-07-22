@@ -36,13 +36,6 @@ class NginxExternal
             throw new ExternalException('nginx reload err, result: [' . $exec->getOutput() . ']');
         }
     }
-    public function buildSSLConf($certPath, $keyPath)
-    {
-        $string = "    ssl_certificate $certPath;
-    ssl_certificate_key $keyPath;
-    include /etc/nginx/options-ssl-nginx.conf;
-    ssl_dhparam /etc/nginx/ssl-dhparams.pem;";
-    }
 
     /**
      * @param NginxVhost $conf

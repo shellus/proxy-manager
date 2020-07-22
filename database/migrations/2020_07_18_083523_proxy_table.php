@@ -18,13 +18,15 @@ class ProxyTable extends Migration
         Schema::create('certificate_config', function (Blueprint $table) {
             $table->comment = '证书签发配置';
             $table->increments('id');
+            $table->string('name')->comment('名称（备注）');
             $table->unsignedInteger('type')->comment('类型：1 dns api');
-            $table->string('payload')->comment('配置JSON');
+            $table->text('payload')->comment('配置JSON');
             $table->timestamps();
         });
         Schema::create('certificates', function (Blueprint $table) {
             $table->comment = '证书';
             $table->increments('id');
+            $table->string('main_domain')->comment('证书主域名');
             $table->unsignedInteger('certificate_config_id')->nullable()->comment('证书签发配置ID');
             $table->unsignedInteger('is_manual_upload')->comment('是否手动上传(手动上传的不续签)');
             $table->dateTime('expires_time')->comment('过期时间');
@@ -51,6 +53,7 @@ class ProxyTable extends Migration
         Schema::create('proxy', function (Blueprint $table) {
             $table->comment = '代理';
             $table->increments('id');
+            $table->string('name')->comment('名称（备注）');
             $table->string('target_address')->comment('原站地址，就算要结构化信息，也可以分割字符串实现');
 
             $table->unsignedInteger('http_port')->comment('监听端口');

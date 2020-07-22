@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * \App\Models\CertificateSignConfigModel
  *
  * @property int $id
+ * @property string $name 名称（备注）
  * @property int $type 类型：1 dns api
  * @property string $payload 配置JSON
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateConfigModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class CertificateConfigModel extends Model
+class CertificateConfigModel extends BaseModel
 {
     protected $table = 'certificate_config';
     protected $guarded = ['id'];

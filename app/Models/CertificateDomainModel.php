@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\CertificateDomainModel
  *
@@ -22,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateDomainModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class CertificateDomainModel extends Model
+class CertificateDomainModel extends BaseModel
 {
     protected $table = 'certificate_domains';
     protected $guarded = ['id'];
