@@ -35,16 +35,18 @@ class CertificateModel extends BaseModel
     const STATUS_CREATED = 10;
     const STATUS_AVAILABLE = 20;
     const STATUS_UNAVAILABLE = 30;
-    const STATUS_ISSUING = 40;
-    const STATUS_EXPIRED = 50;
+    const STATUS_ISSUING_READY = 40;
+    const STATUS_ISSUING = 50;
+    const STATUS_EXPIRED = 60;
 
-//    const STATUS_TITLES = [
-//        self::STATUS_CREATED => '待签发',
-//        self::STATUS_AVAILABLE => '签发成功',
-//        self::STATUS_UNAVAILABLE => '签发失败',
-//        self::STATUS_ISSUING => '签发中',
-//        self::STATUS_EXPIRED => '已过期',
-//    ];
+    const STATUS_TITLES = [
+        self::STATUS_CREATED => '待签发',
+        self::STATUS_AVAILABLE => '签发成功',
+        self::STATUS_UNAVAILABLE => '签发失败',
+        self::STATUS_ISSUING_READY => '签发准备中',
+        self::STATUS_ISSUING => '签发中',
+        self::STATUS_EXPIRED => '已过期',
+    ];
 
     // 好像没用
     const CERT_TYPE_WEBROOT = 'webroot';
@@ -52,5 +54,9 @@ class CertificateModel extends BaseModel
     public function domains()
     {
         return $this->hasMany(CertificateDomainModel::class, 'certificate_id', 'id');
+    }
+    public function logs()
+    {
+        return $this->hasMany(CertificateLogModel::class, 'certificate_id', 'id');
     }
 }

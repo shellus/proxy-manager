@@ -12,6 +12,10 @@ class CertificateConfigLogic
     {
         return CertificateConfigModel::orderBy('id', 'desc')->paginate();
     }
+    public function selectList($request)
+    {
+        return CertificateConfigModel::orderBy('id', 'desc')->select(['id', 'name'])->get();
+    }
     public function save($request, $isCreate)
     {
         if ($isCreate) {

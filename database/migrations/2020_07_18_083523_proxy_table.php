@@ -19,7 +19,7 @@ class ProxyTable extends Migration
             $table->comment = '证书签发配置';
             $table->increments('id');
             $table->string('name')->comment('名称（备注）');
-            $table->unsignedInteger('type')->comment('类型：1 dns api');
+            $table->unsignedInteger('type')->comment('见常量：CertificateConfigModel::TYPE_TITLES');
             $table->text('payload')->comment('配置JSON');
             $table->timestamps();
         });
@@ -31,9 +31,9 @@ class ProxyTable extends Migration
             $table->unsignedInteger('is_manual_upload')->comment('是否手动上传(手动上传的不续签)');
             $table->dateTime('expires_time')->comment('过期时间');
             $table->unsignedInteger('status')->comment('见常量：CertificateModel::STATUS_TITLES');
-            $table->dateTime('start_issue_time')->comment('开始签发时间，用来显示签发耗时');
-            $table->string('cert_path')->comment('证书路径');
-            $table->string('cert_key_path')->comment('证书私钥路径');
+            $table->dateTime('start_issue_time')->nullable()->comment('开始签发时间，用来显示签发耗时');
+            $table->string('cert_path')->nullable()->comment('证书路径');
+            $table->string('cert_key_path')->nullable()->comment('证书私钥路径');
             $table->timestamps();
         });
         Schema::create('certificate_domains', function (Blueprint $table) {

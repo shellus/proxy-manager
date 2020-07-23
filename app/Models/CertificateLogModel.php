@@ -29,25 +29,27 @@ class CertificateLogModel extends BaseModel
     // 10 手动创建，20 开始签发，30 签发成功， 40 签发失败， 50 修改， 60 续签成功， 70 续签失败， 80 吊销
     const OP_TYPE_MANUAL_CREATE = 10;
     const OP_TYPE_CONFIG_CREATE = 20;
-    const OP_TYPE_ISSUE_START = 30;
-    const OP_TYPE_ISSUE_SUCCESS = 40;
-    const OP_TYPE_ISSUE_FAIL = 50;
-    const OP_TYPE_ISSUE_EDIT = 60;
-    const OP_TYPE_RENEW_START = 70;
-    const OP_TYPE_RENEW_SUCCESS = 80;
-    const OP_TYPE_RENEW_FAIL = 90;
-    const OP_TYPE_RENEW_REVOKE = 100;
+    const OP_TYPE_ISSUE_READY = 30;
+    const OP_TYPE_ISSUE_START = 40;
+    const OP_TYPE_ISSUE_SUCCESS = 50;
+    const OP_TYPE_ISSUE_FAIL = 60;
+    const OP_TYPE_ISSUE_EDIT = 70;
+    const OP_TYPE_RENEW_START = 80;
+    const OP_TYPE_RENEW_SUCCESS = 90;
+    const OP_TYPE_RENEW_FAIL = 100;
+    const OP_TYPE_RENEW_REVOKE = 110;
 
-//    const OP_TYPE_TITLES = [
-//        self::OP_TYPE_MANUAL_CREATE => '手动创建',
-//        self::OP_TYPE_CONFIG_CREATE => '从配置创建',
-//        self::OP_TYPE_ISSUE_START => '开始签发',
-//        self::OP_TYPE_ISSUE_SUCCESS => '签发成功',
-//        self::OP_TYPE_ISSUE_FAIL => '签发失败',
-//        self::OP_TYPE_ISSUE_EDIT => '修改',
-//        self::OP_TYPE_RENEW_START => '开始续期',
-//        self::OP_TYPE_RENEW_SUCCESS => '续期成功',
-//        self::OP_TYPE_RENEW_FAIL => '续期失败',
-//        self::OP_TYPE_RENEW_REVOKE => '吊销',
-//    ];
+    const OP_TYPE_TITLES = [
+        self::OP_TYPE_MANUAL_CREATE => '手动创建',
+        self::OP_TYPE_CONFIG_CREATE => '从配置创建',
+        self::OP_TYPE_ISSUE_READY => '准备开始签发',
+        self::OP_TYPE_ISSUE_START => '开始签发',
+        self::OP_TYPE_ISSUE_SUCCESS => '签发成功',
+        self::OP_TYPE_ISSUE_FAIL => '签发失败',
+        self::OP_TYPE_ISSUE_EDIT => '修改',
+        self::OP_TYPE_RENEW_START => '开始续期',
+        self::OP_TYPE_RENEW_SUCCESS => '续期成功',
+        self::OP_TYPE_RENEW_FAIL => '续期失败',
+        self::OP_TYPE_RENEW_REVOKE => '吊销',
+    ];
 }

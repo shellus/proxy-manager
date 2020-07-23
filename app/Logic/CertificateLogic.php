@@ -5,6 +5,8 @@ namespace App\Logic;
 
 
 use App\External\AcmeshExternal;
+use App\Jobs\CertificateIssueJob;
+use App\Logic\Exception\LogicException;
 use App\Models\CertificateConfigModel;
 use App\Models\CertificateDomainModel;
 use App\Models\CertificateLogModel;
@@ -43,8 +45,32 @@ class CertificateLogic
         $log->certificate_id = $certificate->id;
         $log->op_type = CertificateLogModel::OP_TYPE_CONFIG_CREATE;
         $log->save();
+
+        return $certificate;
     }
 
+    public function issueReady($request)
+    {
+        $certificate = CertificateModel::findOrFail($request['id']);
+
+        if ($certificate->status === CertificateModel::STATUS_ISSUING_READY) {
+            throw new LogicException('正在准备签发，请勿重复操作');
+        }
+        if ($certificate->status === CertificateModel::STATUS_ISSUING) {
+            throw new LogicException('正在签发，请勿重复操作');
+        }
+
+
+        $certificate->status = CertificateModel::STATUS_ISSUING_READY;
+        $certificate->save();
+
+        $log = new CertificateLogModel();
+        $log->certificate_id = $certificate->id;
+        $log->op_type = CertificateLogModel::OP_TYPE_ISSUE_READY;
+        $log->save();
+
+        dispatch(new CertificateIssueJob($certificate));
+    }
     /**
      * @param CertificateModel $certificate
      */
@@ -85,7 +111,7 @@ class CertificateLogic
             $log->save();
         } else {
             // 记录异常
-            app(ExceptionHandler::class)->report($issueResult->exception);
+//            app(ExceptionHandler::class)->report($issueResult->exception);
 
             $certificate->status = CertificateModel::STATUS_UNAVAILABLE;
             $certificate->save();
@@ -95,8 +121,11 @@ class CertificateLogic
             $log->op_type = CertificateLogModel::OP_TYPE_ISSUE_FAIL;
             $log->detail = $issueResult->exception->getMessage();
             $log->save();
-        }
 
+            // 抛出异常
+            throw $issueResult->exception;
+        }
+        return $issueResult->isSuccess;
     }
     public function manualUploadCreate($request, $isCreate)
     {
@@ -133,6 +162,11 @@ class CertificateLogic
         $cert = CertificateModel::findOrFail($request['id']);
         /** @var CertificateModel $cert */
         $cert->delete();
+        return $cert;
+    }
+    public function log($request)
+    {
+        $cert = CertificateModel::with(['logs'])->findOrFail($request['id']);
         return $cert;
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Logic\Exception\LogicException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +52,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof LogicException) {
+            if ($request->expectsJson()) {
+                $response = response()->json(['message' => $exception->getMessage()], 401);
+            } else {
+                $response = $this->prepareResponse($request, $exception);
+            }
+            return $response;
+        }
+
         return parent::render($request, $exception);
     }
 }
