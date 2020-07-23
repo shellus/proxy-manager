@@ -1,0 +1,74 @@
+[Thu Jul 23 09:35:43 CST 2020] Creating domain key
+[Thu Jul 23 09:35:43 CST 2020] The domain key is here: /root/.acme.sh/api4.endaosi.com/api4.endaosi.com.key
+[Thu Jul 23 09:35:43 CST 2020] Multi domain='DNS:api4.endaosi.com,DNS:api5.endaosi.com,DNS:api6.endaosi.com'
+[Thu Jul 23 09:35:43 CST 2020] Getting domain auth token for each domain
+[Thu Jul 23 09:35:50 CST 2020] Getting webroot for domain='api4.endaosi.com'
+[Thu Jul 23 09:35:50 CST 2020] Getting webroot for domain='api5.endaosi.com'
+[Thu Jul 23 09:35:50 CST 2020] Getting webroot for domain='api6.endaosi.com'
+[Thu Jul 23 09:35:50 CST 2020] Adding txt value: GLfFkoApS4L8tap0TVEnsKZEZl1UB_QEOWdiLoqcLvo for domain:  _acme-challenge.api4.endaosi.com
+[Thu Jul 23 09:35:52 CST 2020] The txt record is added: Success.
+[Thu Jul 23 09:35:52 CST 2020] Adding txt value: GRsLnaDjbLwnZfs4WNLCAxxeMQ4Kl4JJFCNnnof1YRU for domain:  _acme-challenge.api5.endaosi.com
+[Thu Jul 23 09:35:55 CST 2020] The txt record is added: Success.
+[Thu Jul 23 09:35:55 CST 2020] Adding txt value: PnZQTqa5-_83L7aQXiP5PC-_NqxmP44YOuS6XO4T0EE for domain:  _acme-challenge.api6.endaosi.com
+[Thu Jul 23 09:35:57 CST 2020] The txt record is added: Success.
+[Thu Jul 23 09:35:57 CST 2020] Let's check each DNS record now. Sleep 20 seconds first.
+[Thu Jul 23 09:36:17 CST 2020] Checking api4.endaosi.com for _acme-challenge.api4.endaosi.com
+[Thu Jul 23 09:36:19 CST 2020] Domain api4.endaosi.com '_acme-challenge.api4.endaosi.com' success.
+[Thu Jul 23 09:36:19 CST 2020] Checking api5.endaosi.com for _acme-challenge.api5.endaosi.com
+[Thu Jul 23 09:36:20 CST 2020] Domain api5.endaosi.com '_acme-challenge.api5.endaosi.com' success.
+[Thu Jul 23 09:36:20 CST 2020] Checking api6.endaosi.com for _acme-challenge.api6.endaosi.com
+[Thu Jul 23 09:36:22 CST 2020] Domain api6.endaosi.com '_acme-challenge.api6.endaosi.com' success.
+[Thu Jul 23 09:36:22 CST 2020] All success, let's return
+[Thu Jul 23 09:36:22 CST 2020] Verifying: api4.endaosi.com
+[Thu Jul 23 09:36:26 CST 2020] Success
+[Thu Jul 23 09:36:26 CST 2020] Verifying: api5.endaosi.com
+[Thu Jul 23 09:36:30 CST 2020] Success
+[Thu Jul 23 09:36:30 CST 2020] Verifying: api6.endaosi.com
+[Thu Jul 23 09:36:35 CST 2020] Success
+[Thu Jul 23 09:36:35 CST 2020] Removing DNS records.
+[Thu Jul 23 09:36:35 CST 2020] Removing txt: GLfFkoApS4L8tap0TVEnsKZEZl1UB_QEOWdiLoqcLvo for domain: _acme-challenge.api4.endaosi.com
+[Thu Jul 23 09:36:38 CST 2020] Removed: Success
+[Thu Jul 23 09:36:38 CST 2020] Removing txt: GRsLnaDjbLwnZfs4WNLCAxxeMQ4Kl4JJFCNnnof1YRU for domain: _acme-challenge.api5.endaosi.com
+[Thu Jul 23 09:36:41 CST 2020] Removed: Success
+[Thu Jul 23 09:36:41 CST 2020] Removing txt: PnZQTqa5-_83L7aQXiP5PC-_NqxmP44YOuS6XO4T0EE for domain: _acme-challenge.api6.endaosi.com
+[Thu Jul 23 09:36:44 CST 2020] Removed: Success
+[Thu Jul 23 09:36:44 CST 2020] Verify finished, start to sign.
+[Thu Jul 23 09:36:44 CST 2020] Lets finalize the order, Le_OrderFinalize: https://acme-v02.api.letsencrypt.org/acme/finalize/91972835/4331522037
+[Thu Jul 23 09:36:46 CST 2020] Download cert, Le_LinkCert: https://acme-v02.api.letsencrypt.org/acme/cert/04b30ab3e52be52f323c94d7d1e5126fe937
+[Thu Jul 23 09:36:47 CST 2020] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIFejCCBGKgAwIBAgISBLMKs+Ur5S8yPJTX0eUSb+k3MA0GCSqGSIb3DQEBCwUA
+MEoxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MSMwIQYDVQQD
+ExpMZXQncyBFbmNyeXB0IEF1dGhvcml0eSBYMzAeFw0yMDA3MjMwMDM2NDVaFw0y
+MDEwMjEwMDM2NDVaMBsxGTAXBgNVBAMTEGFwaTQuZW5kYW9zaS5jb20wggEiMA0G
+CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+iXFr9JuIRnZRe33KBwgO7fG7dFHW
+Ch3rOMrkOlnAqspAt0+6cbmbn7plq3XgWJkEWKyW5H+lavo12KTH2eCrMCT9frfY
+uISvnWEJIGmIkbLfDiexAn4XyANic8bKFVuXRVb7EAgmFuSLiqOYn2YOOQD9j0BI
+xXNQeKEfWhZ2xnN2IijNEVhrmlmZZOlfdBuXYbPKVtpzpzIR9jDyLW3QaK3DCKDF
+Txns2RwZOCz1AUUvChWhe96UrpLErRYSGiXpvtRzieOKCASDKbIDm0yKyNFMfU9U
+8Cx9CMfnoSqV+9CjBFQkvIxAn/6rbQlGtDXWC3Gu9z03qc5uzFBpC52tAgMBAAGj
+ggKHMIICgzAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsG
+AQUFBwMCMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFAR12z5QhVACQ+gniIl4WTu8
+8di4MB8GA1UdIwQYMBaAFKhKamMEfd265tE5t6ZFZe/zqOyhMG8GCCsGAQUFBwEB
+BGMwYTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AuaW50LXgzLmxldHNlbmNyeXB0
+Lm9yZzAvBggrBgEFBQcwAoYjaHR0cDovL2NlcnQuaW50LXgzLmxldHNlbmNyeXB0
+Lm9yZy8wPwYDVR0RBDgwNoIQYXBpNC5lbmRhb3NpLmNvbYIQYXBpNS5lbmRhb3Np
+LmNvbYIQYXBpNi5lbmRhb3NpLmNvbTBMBgNVHSAERTBDMAgGBmeBDAECATA3Bgsr
+BgEEAYLfEwEBATAoMCYGCCsGAQUFBwIBFhpodHRwOi8vY3BzLmxldHNlbmNyeXB0
+Lm9yZzCCAQIGCisGAQQB1nkCBAIEgfMEgfAA7gB1AOcS8rA3fhpi+47JDGGE8ep7
+N8tWHREmW/Pg80vyQVRuAAABc3lQzzoAAAQDAEYwRAIgCc8Sbyun76KyVF+p8jVX
+rxpn6ab3YGz0OAbZfmClw10CIHOp6qKpBo9sZMa43XSPEdSFMAf6+tP+FJUymer/
+ILG/AHUAsh4FzIuizYogTodm+Su5iiUgZ2va+nDnsklTLe+LkF4AAAFzeVDPMAAA
+BAMARjBEAiB6siyHvM1tCje7aa9zqyFXBAlvACQh6Sb405PHx6nvEgIgULDCw4nw
+G6mDITOAWSFmuXPFs3HmwapDXhuxFskKyHEwDQYJKoZIhvcNAQELBQADggEBAGJK
+ZW3qeIct+Mj0G+lz2G1EdeJOtSzrc1dhfVPw/KLK4oTfyglmFUr0gTjS5GSxa6Vq
+KZmqq/3jPAXf6z2yYZSSbawJr+hO+qrYEjlUH6TBiEhGEkLXcTVL4fgLlk9a3eZj
+J+Jy0I1HscIPhlrNWOxTrAuMpjIMxvTT9rVw4uPFEGHG3OKnFDhXHV6Xljs+8OLz
+sxGmrSYyi1cXv3kSu4ZOOgHJqST5WBMEb4w/GY6/wBknd26K4tVX/E+b4vuolvSr
+19sG2IAfNdVASDKTkxPwVt6k8M30CjNMgyCz4s2SOPyglFuxmAJF8I5UxjkBEyxY
+Lt+5GHF84cOFK7XPG8s=
+-----END CERTIFICATE-----
+[Thu Jul 23 09:36:47 CST 2020] Your cert is in  /root/.acme.sh/api4.endaosi.com/api4.endaosi.com.cer
+[Thu Jul 23 09:36:47 CST 2020] Your cert key is in  /root/.acme.sh/api4.endaosi.com/api4.endaosi.com.key
+[Thu Jul 23 09:36:47 CST 2020] The intermediate CA cert is in  /root/.acme.sh/api4.endaosi.com/ca.cer
+[Thu Jul 23 09:36:47 CST 2020] And the full chain certs is there:  /root/.acme.sh/api4.endaosi.com/fullchain.cer

@@ -30,6 +30,8 @@ class ProxyTable extends Migration
             $table->unsignedInteger('certificate_config_id')->nullable()->comment('证书签发配置ID');
             $table->unsignedInteger('is_manual_upload')->comment('是否手动上传(手动上传的不续签)');
             $table->dateTime('expires_time')->comment('过期时间');
+            $table->unsignedInteger('status')->comment('见常量：CertificateModel::STATUS_TITLES');
+            $table->dateTime('start_issue_time')->comment('开始签发时间，用来显示签发耗时');
             $table->string('cert_path')->comment('证书路径');
             $table->string('cert_key_path')->comment('证书私钥路径');
             $table->timestamps();
@@ -45,7 +47,8 @@ class ProxyTable extends Migration
             $table->comment = '证书日志';
             $table->increments('id');
             $table->unsignedInteger('certificate_id')->comment('证书ID');
-            $table->unsignedInteger('op_type')->comment('操作类型：10 签发成功， 20 签发失败， 30 修改， 40 续签成功， 50 续签失败， 60 吊销');
+            $table->unsignedInteger('op_type')->comment('见常量：CertificateLogModel::OP_TYPE_TITLES');
+            $table->text('detail')->comment('如果是命令类，那么这里是命令输出，如果是操作类，这里可空');
             $table->timestamps();
         });
 

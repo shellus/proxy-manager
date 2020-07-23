@@ -34,7 +34,6 @@ class ExecClass
     {
         $instance = new static();
         $instance->shell = $shell;
-        $instance->exec();
         return $instance;
     }
 

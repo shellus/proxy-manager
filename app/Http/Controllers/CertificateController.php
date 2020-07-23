@@ -27,7 +27,7 @@ class CertificateController extends Controller
     }
     public function save(Request $request)
     {
-        $data = (new CertificateLogic())->manualUploadSave($request, empty($request['id']));
+        $data = (new CertificateLogic())->manualUploadCreate($request, empty($request['id']));
         return $this->success($data);
     }
     public function remove(Request $request)

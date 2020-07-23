@@ -28,16 +28,26 @@ class AcmeshExternal
         return $this;
     }
 
+    protected function importDomains($domains)
+    {
+        $newArr = [];
+        foreach ($domains as $domain) {
+            $newArr[] = '-d';
+            $newArr[] = $domain;
+        }
+        return implode(' ', $newArr);
+    }
+
     /**
-     * @param array $domains
-     * @return integer
+     * @param $domains
+     * @return AcmeshIssueResult
      */
     public function issueAliyun($domains)
     {
         if (empty($this->dns) || empty($this->id) || empty($this->key)) {
-            throw new AcmeshException('Certificate sign parameters are not configured, Please call static::config()');
+            return AcmeshIssueResult::fail(new AcmeshException('Certificate sign parameters are not configured, Please call static::config()'));
         }
-        $exec = ExecClass::create("Ali_Key=" . $this->id . ' Ali_Secret=' . $this->key . ' ' . $this->binaryPath . ' --issue --dns dns_ali -d ' . implode(' ', $domains));
+        $exec = ExecClass::create("Ali_Key=" . $this->id . ' Ali_Secret=' . $this->key . ' ' . $this->binaryPath . ' --issue --dns dns_ali ' . $this->importDomains($domains));
         \Log::info('开始签发证书： 提供商=阿里云dns，命令行：[' . $exec->getShell() . ']');
         $exec->exec();
         $output = $exec->getOutput();
@@ -46,24 +56,35 @@ class AcmeshExternal
         if ($code !== ExecClass::SUCCESS) {
             // 已经签发的域名，可以尝试删除后重新创建
             if (strpos($output, 'Domains not changed') !== false) {
-                throw new AcmeshException('Certificate already exists, Please try acme.sh --remove -d example.com');
+                return AcmeshIssueResult::fail(new AcmeshException('Certificate already exists, Please try acme.sh --remove -d example.com'));
             }
             // 禁止创建的域名，例如baidu.com
             if (strpos($output, 'Create new order error') !== false) {
                 if (preg_match('/"detail":(.*)/', $output, $matches) >= 2) {
-                    throw new AcmeshException('Create new order error: [' . $matches[1] . ']');
+                    return AcmeshIssueResult::fail(new AcmeshException('Create new order error: [' . $matches[1] . ']'));
                 } else {
-                    throw new AcmeshException('Create new order error: [' . $output . ']');
+                    return AcmeshIssueResult::fail(new AcmeshException('Create new order error: [' . $output . ']'));
                 }
             }
             // 不是你的域名（添加dns记录失败）
             if (strpos($output, 'Error add txt for domain') !== false) {
-                throw new AcmeshException('Error add txt for domain, Please check if the domain name exists');
+                return AcmeshIssueResult::fail(new AcmeshException('Error add txt for domain, Please check if the domain name exists'));
             }
 
-            throw new AcmeshException('Other error: [' . $output . ']');
+            return AcmeshIssueResult::fail(new AcmeshException('Other error: [' . $output . ']'));
         }
-        return true;
+
+        if (!preg_match('/And the full chain certs is there:  (.+)/', $output, $matches) || count($matches) !== 2) {
+            return AcmeshIssueResult::fail(new AcmeshException('issue success but not found cert path: detail see log'));
+        }
+        $cert_path = $matches[1];
+
+        if (!preg_match('/Your cert key is in  (.+)/', $output, $matches) || count($matches) !== 2) {
+            return AcmeshIssueResult::fail(new AcmeshException('issue success but not found cert key path: detail see log'));
+        }
+        $cert_key_path = $matches[1];
+
+        return AcmeshIssueResult::success($cert_path, $cert_key_path, $output);
     }
 
     /**
