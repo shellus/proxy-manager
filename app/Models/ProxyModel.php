@@ -36,9 +36,31 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereTargetAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $status ProxyModel::STATUS_TITLES
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereStatus($value)
  */
 class ProxyModel extends BaseModel
 {
+    const STATUS_NO_DEPLOY = 10;
+    const STATUS_DEPLOYING = 20;
+    const STATUS_DEPLOY_READY = 30;
+    const STATUS_DEPLOYED = 40;
+    const STATUS_DEPLOY_FAIL = 50;
+    const STATUS_WATCH_ISSUE = 60;
+    const STATUS_TITLES = [
+        self::STATUS_NO_DEPLOY => '未部署', // 创建后就是这个状态
+        self::STATUS_WATCH_ISSUE => '等待证书签发', // 如果选择了开启SSL，然后选了一个签发方式的话，创建后就进入这个状态
+        self::STATUS_DEPLOY_READY => '部署: 等待队列',
+        self::STATUS_DEPLOYING => '部署中',
+        self::STATUS_DEPLOYED => '已部署',
+        self::STATUS_DEPLOY_FAIL => '部署失败',
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
+
     protected $table = 'proxy';
     protected $guarded = ['id'];
     protected $casts = [
@@ -47,6 +69,7 @@ class ProxyModel extends BaseModel
         'enable_https_hsts' => 'boolean',
         'enable_http2' => 'boolean',
     ];
+
     public function domains()
     {
         return $this->hasMany(ProxyDomainModel::class, 'proxy_id', 'id');
@@ -54,5 +77,9 @@ class ProxyModel extends BaseModel
     public function certificate()
     {
         return $this->belongsTo(CertificateModel::class, 'certificate_id', 'id');
+    }
+    public function logs()
+    {
+        return $this->hasMany(ProxyLogModel::class, 'proxy_id', 'id');
     }
 }

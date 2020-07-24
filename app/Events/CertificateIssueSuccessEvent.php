@@ -17,7 +17,7 @@ class CertificateIssueSuccessEvent
      *
      * @return void
      */
-    public function __construct($certificate)
+    public function __construct(CertificateModel $certificate)
     {
         $this->certificate = $certificate;
     }

@@ -32,5 +32,19 @@ else
     echo 'found exists mysql data dir !'
 fi
 
+
+# 安装acme.sh
+
+if [[ -d "/root/.acme.sh/" && -f "/root/.acme.sh/acme.sh" ]]; then
+    echo 'found acme.sh file !'
+else
+#todo 安装报错了 ./acme.sh: 6999: shift: can't shift that many
+    echo 'install acme.sh ...'
+    cd /tmp && \
+    git clone https://github.com/Neilpang/acme.sh.git && \
+    cd acme.sh && \
+    ./acme.sh --install --config-home
+fi
+
 echo 'running supervisord ...'
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf

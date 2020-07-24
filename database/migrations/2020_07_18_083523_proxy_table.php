@@ -56,6 +56,8 @@ class ProxyTable extends Migration
         Schema::create('proxy', function (Blueprint $table) {
             $table->comment = '代理';
             $table->increments('id');
+            $table->unsignedInteger('status')->comment('见常量：ProxyModel::STATUS_TITLES');
+
             $table->string('name')->comment('名称（备注）');
             $table->string('target_address')->comment('原站地址，就算要结构化信息，也可以分割字符串实现');
 
@@ -75,6 +77,15 @@ class ProxyTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('proxy_id')->comment('代理ID');
             $table->string('domain')->comment('域名');
+            $table->timestamps();
+        });
+
+        Schema::create('proxy_log', function (Blueprint $table) {
+            $table->comment = 'proxy日志';
+            $table->increments('id');
+            $table->unsignedInteger('proxy_id')->comment('proxyID');
+            $table->unsignedInteger('op_type')->comment('见常量：ProxyLogModel::OP_TYPE_TITLES');
+            $table->text('detail')->nullable()->comment('如果是命令类，那么这里是命令输出，如果是操作类，这里可空');
             $table->timestamps();
         });
     }

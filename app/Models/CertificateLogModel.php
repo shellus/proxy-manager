@@ -26,7 +26,6 @@ class CertificateLogModel extends BaseModel
     protected $table = 'certificate_log';
     protected $guarded = ['id'];
 
-    // 10 手动创建，20 开始签发，30 签发成功， 40 签发失败， 50 修改， 60 续签成功， 70 续签失败， 80 吊销
     const OP_TYPE_MANUAL_CREATE = 10;
     const OP_TYPE_CONFIG_CREATE = 20;
     const OP_TYPE_ISSUE_READY = 30;

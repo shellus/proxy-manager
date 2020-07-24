@@ -6,7 +6,9 @@ services:
     build: .
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./acme.sh:/root/.acme.sh
       - /mnt/www/me/proxy-manager:/webroot/proxy-manager
     ports:
       - "80:80"
       - "443:443"
+      - "3309:3306"

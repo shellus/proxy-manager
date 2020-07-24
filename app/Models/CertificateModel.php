@@ -52,7 +52,7 @@ class CertificateModel extends BaseModel
         self::STATUS_CREATED => '待签发',
         self::STATUS_AVAILABLE => '签发成功',
         self::STATUS_UNAVAILABLE => '签发失败',
-        self::STATUS_ISSUING_READY => '签发准备中',
+        self::STATUS_ISSUING_READY => '签发：等待队列',
         self::STATUS_ISSUING => '签发中',
         self::STATUS_EXPIRED => '已过期',
     ];

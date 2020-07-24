@@ -23,10 +23,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/home-data', 'IndexController@homeData');
 
+Route::get('/proxy/index-data', 'ProxyController@indexData');
 Route::get('/proxy/list', 'ProxyController@list');
 Route::post('/proxy/save', 'ProxyController@save');
 Route::post('/proxy/remove', 'ProxyController@remove');
 Route::post('/proxy/generate-conf', 'ProxyController@generateConf');
+Route::get('/proxy/log', 'ProxyController@log');
 
 Route::get('/certificate/certificate-config/index-data', 'CertificateConfigController@indexData');
 Route::get('/certificate/certificate-config/list', 'CertificateConfigController@list');
