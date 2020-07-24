@@ -48,7 +48,7 @@ class ProxyTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('certificate_id')->comment('证书ID');
             $table->unsignedInteger('op_type')->comment('见常量：CertificateLogModel::OP_TYPE_TITLES');
-            $table->text('detail')->comment('如果是命令类，那么这里是命令输出，如果是操作类，这里可空');
+            $table->text('detail')->nullable()->comment('如果是命令类，那么这里是命令输出，如果是操作类，这里可空');
             $table->timestamps();
         });
 
