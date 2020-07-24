@@ -6,6 +6,7 @@ namespace App\Logic;
 
 use App\External\AcmeshExternal;
 use App\Jobs\CertificateIssueJob;
+use App\Jobs\CertificateIssueTimeoutJob;
 use App\Logic\Exception\LogicException;
 use App\Models\CertificateConfigModel;
 use App\Models\CertificateDomainModel;
@@ -60,6 +61,7 @@ class CertificateLogic
         }
 
         $certificate->status = CertificateModel::STATUS_ISSUING_READY;
+        $certificate->start_issue_time = Carbon::now()->toDateTimeString();
         $certificate->save();
 
         $log = new CertificateLogModel();
@@ -67,7 +69,11 @@ class CertificateLogic
         $log->op_type = CertificateLogModel::OP_TYPE_ISSUE_READY;
         $log->save();
 
+        // 队列去签发
         dispatch(new CertificateIssueJob($certificate));
+        // 一分钟后检查有没有超时
+        dispatch(new CertificateIssueTimeoutJob($certificate, $certificate->start_issue_time))->delay(Carbon::now()->addMinute());
+
     }
     /**
      * @param CertificateModel $certificate
@@ -80,7 +86,6 @@ class CertificateLogic
 
         // 写开始日志
         $certificate->status = CertificateModel::STATUS_ISSUING;
-        $certificate->start_issue_time = Carbon::now()->toDateTimeString();
         $certificate->save();
 
         $log = new CertificateLogModel();

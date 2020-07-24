@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 /**
  * \App\Models\CertificateModel
  *
@@ -9,21 +10,29 @@ namespace App\Models;
  * @property int|null $certificate_config_id 证书签发配置ID
  * @property int $is_manual_upload 是否手动上传(手动上传的不续签)
  * @property string $expires_time 过期时间
+ * @property int $status 见常量：CertificateModel::STATUS_TITLES
+ * @property string|null $start_issue_time 开始签发时间，用来显示签发耗时
+ * @property string|null $cert_path 证书路径
+ * @property string|null $cert_key_path 证书私钥路径
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string $cert_path 证书路径
- * @property string $cert_key_path 证书私钥路径
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CertificateDomainModel[] $domains
+ * @property-read int|null $domains_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CertificateLogModel[] $logs
+ * @property-read int|null $logs_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereCertKeyPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereCertPath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereCertificateSignConfigId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereCertificateConfigId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereExpiresTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereIsManualUpload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereMainDomain($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereStartIssueTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereUpdatedAt($value)
  * @mixin \Eloquent
  */
