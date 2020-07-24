@@ -25,3 +25,7 @@ networks:
 2. 在项目下执行`php artisan serve`,  cd 到 `proxy-manager-vue` 执行 `npm serve`
 
 有任何疑问，请提Issue
+
+## todo
+- 运行环境要求nginx+php+acme.sh，需要一个专用docker
+- nginx vhost 目录配置很难搞

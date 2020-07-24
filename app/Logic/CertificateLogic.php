@@ -12,7 +12,6 @@ use App\Models\CertificateDomainModel;
 use App\Models\CertificateLogModel;
 use App\Models\CertificateModel;
 use Carbon\Carbon;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 
 class CertificateLogic
 {
@@ -59,7 +58,6 @@ class CertificateLogic
         if ($certificate->status === CertificateModel::STATUS_ISSUING) {
             throw new LogicException('正在签发，请勿重复操作');
         }
-
 
         $certificate->status = CertificateModel::STATUS_ISSUING_READY;
         $certificate->save();
