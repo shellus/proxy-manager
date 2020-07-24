@@ -6,7 +6,10 @@ namespace App\Models;
  * \App\Models\ProxyModel
  *
  * @property int $id
- * @property string $target_address 原站地址
+ * @property string $name 名称（备注）
+ * @property string $target_address 原站地址，就算要结构化信息，也可以分割字符串实现
+ * @property int $http_port 监听端口
+ * @property int $https_port 加密监听端口
  * @property bool $enable_https 开关
  * @property bool $enable_https_only 开关
  * @property bool $enable_https_hsts 开关
@@ -14,8 +17,6 @@ namespace App\Models;
  * @property int|null $certificate_id 证书ID
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $http_port 监听端口
- * @property int $https_port 加密监听端口
  * @property-read \App\Models\CertificateModel|null $certificate
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProxyDomainModel[] $domains
  * @property-read int|null $domains_count
@@ -31,6 +32,7 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereHttpPort($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereHttpsPort($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereTargetAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ProxyModel whereUpdatedAt($value)
  * @mixin \Eloquent

@@ -4,6 +4,7 @@
 namespace App\Logic;
 
 
+use App\Events\CertificateIssueSuccessEvent;
 use App\External\AcmeshExternal;
 use App\Jobs\CertificateIssueJob;
 use App\Jobs\CertificateIssueTimeoutJob;
@@ -128,6 +129,10 @@ class CertificateLogic
             // 抛出异常
             throw $issueResult->exception;
         }
+
+        // 发送事件：
+        $issueResult->isSuccess && event(new CertificateIssueSuccessEvent($certificate));
+
         return $issueResult->isSuccess;
     }
     public function manualUploadCreate($request, $isCreate)

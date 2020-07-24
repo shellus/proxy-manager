@@ -11,7 +11,7 @@ server {
     ssl_dhparam /etc/nginx/ssl-dhparams.pem;
 
 <?php if($conf->enable_https_only): ?>
-    if ($protocol = http) {
+    if ($scheme = http) {
         return 301 https://$host$request_uri;
     }
 <?php endif; ?>

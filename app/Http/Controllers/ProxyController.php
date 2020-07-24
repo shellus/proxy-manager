@@ -23,12 +23,12 @@ class ProxyController extends Controller
     }
     public function remove(Request $request)
     {
-        $data = (new ProxyLogic())->remove($request);
-        return $this->success($data);
+        (new ProxyLogic())->remove($request);
+        return $this->success([]);
     }
     public function generateConf(Request $request)
     {
-        $data = app()->call([(new ProxyLogic()), 'generateConf'], ['request' => $request]);
-        return $this->success($data);
+        (new ProxyLogic())->generateConf($request);
+        return $this->success([]);
     }
 }

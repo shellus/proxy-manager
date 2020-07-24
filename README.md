@@ -27,5 +27,7 @@ networks:
 有任何疑问，请提Issue
 
 ## todo
-- 运行环境要求nginx+php+acme.sh，需要一个专用docker
-- nginx vhost 目录配置很难搞
+- 证书签发完成自动生成vhost conf，这样就可以即时创建好ssl的vhost，而不用在页面上等
+- 证书签发完成页面通知（websocket）
+- 启动后部署所有vhost，不用映射vhost目录了
+- 缺省页面vhost

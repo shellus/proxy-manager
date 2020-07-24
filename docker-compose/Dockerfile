@@ -32,6 +32,9 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 WORKDIR /webroot/proxy-manager
 
+COPY options-ssl-nginx.conf /etc/nginx/
+COPY ssl-dhparams.pem /etc/nginx/
+
 EXPOSE 80 443
 
 VOLUME /var/lib/mysql /etc/nginx/sites-enabled

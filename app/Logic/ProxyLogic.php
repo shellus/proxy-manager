@@ -6,6 +6,7 @@ namespace App\Logic;
 
 use App\External\NginxExternal;
 use App\External\NginxVhost;
+use App\Logic\Exception\LogicException;
 use App\Models\CertificateModel;
 use App\Models\ProxyDomainModel;
 use App\Models\ProxyModel;
@@ -21,9 +22,19 @@ class ProxyLogic
         $proxy = ProxyModel::findOrFail($request['id']);
         $proxy->delete();
     }
-    public function generateConf($request, NginxExternal $nginx)
+    public function generateConf($request)
     {
         $proxy = ProxyModel::findOrFail($request['id']);
+        if ($proxy->certificate->status !== CertificateModel::STATUS_AVAILABLE) {
+            throw new LogicException('证书不可用，无法部署');
+        }
+        $this->deploy($proxy);
+    }
+
+    public function deploy(ProxyModel $proxy)
+    {
+        /** @var NginxExternal $nginx */
+        $nginx = app(NginxExternal::class);
         $conf = NginxVhost::fromModel($proxy);
         $nginx->generateVhost($proxy->id, $conf);
         $nginx->reload();

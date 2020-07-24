@@ -6,7 +6,6 @@ services:
     build: .
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./vhost:/etc/nginx/sites-enabled
       - /mnt/www/me/proxy-manager:/webroot/proxy-manager
     ports:
       - "80:80"
