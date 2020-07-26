@@ -31,3 +31,7 @@ networks:
 - 证书签发完成页面通知（websocket）
 - 启动后部署所有vhost，不用映射vhost目录了
 - 缺省页面vhost
+
+## 问题
+- 证书还是没有保存到/acme.sh，是不是因为这个路径是存在~/profile的？
+- 证书创建完成自动开始签发

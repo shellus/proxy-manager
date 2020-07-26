@@ -12,3 +12,8 @@ services:
       - "80:80"
       - "443:443"
       - "3309:3306"
+    networks:
+      - nginx_net
+networks:
+  nginx_net:
+    external: true
