@@ -25,19 +25,39 @@ RUN sed -i 's/user\s*=\s*www-data/user=root/' /etc/php/7.4/fpm/pool.d/www.conf
 
 # 入口脚本，用来初始化数据库
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh
+RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh && chmod +x /entrypoint.sh
 
 # SSL 配置
 COPY options-ssl-nginx.conf /etc/nginx/
 COPY ssl-dhparams.pem /etc/nginx/
 
 # proxy-manager 的 vhost
-COPY proxy-mamager.conf /etc/nginx/proxy-mamager.conf
-RUN sed -i 's%sites-enabled/.*%&\n\tinclude /etc/nginx/proxy-mamager.conf;%' /etc/nginx/nginx.conf
+COPY proxy-manager.conf /etc/nginx/proxy-manager.conf
+RUN sed -i 's%sites-enabled/.*%&\n\tinclude /etc/nginx/proxy-manager.conf;%' /etc/nginx/nginx.conf
 RUN rm /etc/nginx/sites-enabled/default
 
 # mysql允许远程连接，只要不映射端口出去也就没事
 RUN sed -i 's/bind-address.*/bind-address=0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# 安装acme.sh
+RUN cd /tmp && \
+    git clone https://github.com/Neilpang/acme.sh.git && \
+    cd acme.sh && \
+    ./acme.sh --install --config-home /acme.sh
+
+# 安装mysql
+RUN echo 'starting mysqld ...' && \
+    /bin/bash -c "mysqld &" && sleep 5 && \
+    echo 'mysqld started !' && \
+    echo 'create database and create mysql user ...' && \
+    mysql -e "create database proxy_manager; CREATE USER 'root'@'127.0.0.1'; GRANT ALL ON *.* TO  'root'@'127.0.0.1'; FLUSH PRIVILEGES;" && \
+    echo 'database created !' && \
+    echo 'running migrate ...' && \
+    cd /webroot/proxy-manager/ && chmod -R 777 storage && php artisan migrate --force && \
+    echo 'migrated ...' && \
+    killall mysqld
+
+RUN mv /var/lib/mysql /var/lib/mysql_init && mkdir /var/lib/mysql
 
 VOLUME /var/lib/mysql
 WORKDIR /webroot/proxy-manager
