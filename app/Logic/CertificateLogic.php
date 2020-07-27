@@ -23,7 +23,13 @@ class CertificateLogic
     }
     public function selectList($request)
     {
-        return CertificateModel::orderBy('id', 'desc')->select(['id', 'main_domain as name'])->get();
+        $query = CertificateModel::orderBy('id', 'desc');
+
+        if (!empty($request['only_available'])) {
+            $query->where('status', CertificateModel::STATUS_AVAILABLE);
+        }
+
+        return $query->select(['id', 'main_domain as name'])->get();
     }
     public function fromConfigCreate($certificateConfigId, $domains)
     {
@@ -50,9 +56,9 @@ class CertificateLogic
         return $certificate;
     }
 
-    public function issueReady($request)
+    public function issueReady($certificateId)
     {
-        $certificate = CertificateModel::findOrFail($request['id']);
+        $certificate = CertificateModel::findOrFail($certificateId);
 
         if ($certificate->status === CertificateModel::STATUS_ISSUING_READY) {
             throw new LogicException('正在准备签发，请勿重复操作');
@@ -168,7 +174,9 @@ class CertificateLogic
     public function remove($request)
     {
         $cert = CertificateModel::findOrFail($request['id']);
-        /** @var CertificateModel $cert */
+        if ($cert->proxies()->exists()) {
+            throw new LogicException('证书已经被代理 [' . $cert->proxies()->pluck('name')->implode(',') . '] 使用，不可以删除');
+        }
         $cert->delete();
         return $cert;
     }

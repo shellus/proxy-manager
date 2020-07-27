@@ -5,13 +5,10 @@ services:
     image: shellus/proxy-manager
     build: .
     volumes:
-      - ./mysql:/var/lib/mysql
-      - ./acme.sh:/acme.sh
-      - /Users/shellus/www/proxy-manager:/webroot/proxy-manager
+      - ./config:/config
     ports:
       - "80:80"
       - "443:443"
-      - "3309:3306"
     networks:
       - nginx_net
 networks:

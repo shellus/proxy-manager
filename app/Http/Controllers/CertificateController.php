@@ -38,6 +38,9 @@ class CertificateController extends Controller
     public function createFromConfig(Request $request)
     {
         $data = (new CertificateLogic())->fromConfigCreate($request['certificate_config_id'], $request['domains']);
+        if ($request['issue_now']) {
+            (new CertificateLogic())->issueReady($data['id']);
+        }
         return $this->success($data);
     }
     public function remove(Request $request)
@@ -52,7 +55,7 @@ class CertificateController extends Controller
     }
     public function issue(Request $request)
     {
-        (new CertificateLogic())->issueReady($request);
+        (new CertificateLogic())->issueReady($request['id']);
         return $this->success([]);
     }
 }

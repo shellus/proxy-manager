@@ -15,35 +15,16 @@ RUN cd /webroot/proxy-manager && composer install && cp .env.example .env && php
 RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git
 RUN cd /webroot/proxy-manager/proxy-manager-vue && npm install && cp .env.example .env.local && npm run build
 
-# 管理多个进程
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-RUN touch /var/log/cron.log
-
 # root权限运行一切，不然在ntfs或者samba文件系统，没法修改权限，问题大大
 RUN sed -i 's/user\s*=\s*mysql/user=root/' /etc/mysql/mysql.conf.d/mysqld.cnf && mkdir /var/run/mysqld
 RUN sed -i 's/user\s*=\s*www-data/user=root/' /etc/php/7.4/fpm/pool.d/www.conf
-
-# 入口脚本，用来初始化数据库
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh && chmod +x /entrypoint.sh
-
-# SSL 配置
-COPY options-ssl-nginx.conf /etc/nginx/
-COPY ssl-dhparams.pem /etc/nginx/
-
-# proxy-manager 的 vhost
-COPY proxy-manager.conf /etc/nginx/proxy-manager.conf
-RUN sed -i 's%sites-enabled/.*%&\n\tinclude /etc/nginx/proxy-manager.conf;%' /etc/nginx/nginx.conf
-RUN rm /etc/nginx/sites-enabled/default
-
-# mysql允许远程连接，只要不映射端口出去也就没事
-RUN sed -i 's/bind-address.*/bind-address=0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # 安装acme.sh
 RUN cd /tmp && \
     git clone https://github.com/Neilpang/acme.sh.git && \
     cd acme.sh && \
-    ./acme.sh --install --config-home /acme.sh
+    ./acme.sh --install
+ENV LE_CONFIG_HOME="/config/acme.sh"
 
 # 安装mysql
 RUN echo 'starting mysqld ...' && \
@@ -57,12 +38,28 @@ RUN echo 'starting mysqld ...' && \
     echo 'migrated ...' && \
     killall mysqld
 
-RUN mv /var/lib/mysql /var/lib/mysql_init && mkdir /var/lib/mysql
+# mysql允许远程连接，只要不映射端口出去也就没事
+RUN sed -i 's/bind-address.*/bind-address=0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN mv /var/lib/mysql /var/lib/mysql_init && mkdir -p /config/mysql
 
-VOLUME /var/lib/mysql
+# SSL 配置
+COPY options-ssl-nginx.conf /etc/nginx/
+COPY ssl-dhparams.pem /etc/nginx/
+
+# proxy-manager 的 vhost
+COPY proxy-manager.conf /etc/nginx/proxy-manager.conf
+RUN sed -i 's%sites-enabled/.*%&\n\tinclude /etc/nginx/proxy-manager.conf;%' /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
+
+# 管理多个进程
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+RUN touch /var/log/cron.log
+
+# 入口脚本，用来初始化数据库
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
+
+VOLUME /config
 WORKDIR /webroot/proxy-manager
 EXPOSE 80 443
-ENTRYPOINT ["docker-entrypoint.sh"]
-
-
-
+ENTRYPOINT ["/docker-entrypoint.sh"]

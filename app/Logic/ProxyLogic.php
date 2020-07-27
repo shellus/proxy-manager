@@ -149,6 +149,8 @@ class ProxyLogic
             } else {
                 throw new \Exception('启用HTTPS，但是没有配置证书，创建失败');
             }
+        } else {
+            $proxy->certificate_id = null;
         }
 
         $proxy->save();

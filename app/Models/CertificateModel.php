@@ -35,6 +35,8 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CertificateModel whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProxyModel[] $proxies
+ * @property-read int|null $proxies_count
  */
 class CertificateModel extends BaseModel
 {
@@ -67,5 +69,9 @@ class CertificateModel extends BaseModel
     public function logs()
     {
         return $this->hasMany(CertificateLogModel::class, 'certificate_id', 'id');
+    }
+    public function proxies()
+    {
+        return $this->hasMany(ProxyModel::class, 'certificate_id', 'id');
     }
 }

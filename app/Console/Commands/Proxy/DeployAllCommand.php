@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Proxy;
 
 use App\Logic\ProxyLogic;
 use App\Models\ProxyModel;
@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Collection;
 
-class DeployAllProxyVhostCommand extends Command
+class DeployAllCommand extends Command
 {
     /**
      * The name and signature of the console command.
