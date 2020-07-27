@@ -12,7 +12,7 @@ else
 fi
 
 # 等待mysql启动后部署所有host
-sleep 10 && \
+sleep 20 && \
 echo 'start deploy all host ...' && \
 php artisan proxy:deploy-all && \
 echo 'done deploy all host !' &

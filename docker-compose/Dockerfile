@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     redis-server mysql-server
 
 # 应用代码下载+安装第三方库
-RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git
+RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git && cd proxy-manager && git reset --hard 52bfea512f01254235253d8f956fd900e0e689fa
 RUN cd /webroot/proxy-manager && composer install && cp .env.example .env && php artisan key:generate
 
-RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git
+RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git && cd proxy-manager-vue && git reset --hard 768c44b76b5eb9e6ec206f8c7716a37f15cc2a5d
 RUN cd /webroot/proxy-manager/proxy-manager-vue && npm install && cp .env.example .env.local && npm run build
 
 # root权限运行一切，不然在ntfs或者samba文件系统，没法修改权限，问题大大

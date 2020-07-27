@@ -59,7 +59,7 @@ class ProxyLogic
     public function generateConf($request)
     {
         $proxy = ProxyModel::findOrFail($request['id']);
-        if ($proxy->certificate->status !== CertificateModel::STATUS_AVAILABLE) {
+        if ($proxy->enable_https && $proxy->certificate->status !== CertificateModel::STATUS_AVAILABLE) {
             throw new LogicException('证书不可用，无法部署');
         }
         $this->deploy($proxy, ProxyLogic::DEPLOY_TRIGGER_TYPE_MANUAL);

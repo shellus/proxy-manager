@@ -6,9 +6,11 @@ services:
     build: .
     volumes:
       - ./config:/config
+      - ./laravel.log:/webroot/proxy-manager/storage/logs/laravel.log
     ports:
       - "80:80"
       - "443:443"
+      - "3309:3306"
     networks:
       - nginx_net
 networks:
