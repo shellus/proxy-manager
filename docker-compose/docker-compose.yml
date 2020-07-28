@@ -7,12 +7,25 @@ services:
     volumes:
       - ./config:/config
       - ./laravel.log:/webroot/proxy-manager/storage/logs/laravel.log
+      - /mnt/www/me/proxy-manager/:/webroot/proxy-manager/
     ports:
       - "80:80"
       - "443:443"
       - "3309:3306"
     networks:
+      - default
       - nginx_net
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_DATABASE=proxy_manager
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - /tmp/mysql:/var/lib/mysql
+
+
 networks:
   nginx_net:
     external: true

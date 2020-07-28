@@ -6,17 +6,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     wget curl unzip \
     php-fpm php-dom php-pdo-mysql php-redis nginx git npm composer \
     supervisor cron sudo \
-    redis-server mysql-server
+    redis-server mysql-client
 
 # 应用代码下载+安装第三方库
-RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git && cd proxy-manager && git reset --hard 52bfea512f01254235253d8f956fd900e0e689fa
+# TODO 可以考虑用分支部署，或者tag release部署
+RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git && cd proxy-manager && git reset --hard dfae521ffad0d7338b224e185821d412cc18fbcf
 RUN cd /webroot/proxy-manager && composer install && cp .env.example .env && php artisan key:generate
 
 RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git && cd proxy-manager-vue && git reset --hard 768c44b76b5eb9e6ec206f8c7716a37f15cc2a5d
 RUN cd /webroot/proxy-manager/proxy-manager-vue && npm install && cp .env.example .env.local && npm run build
 
 # root权限运行一切，不然在ntfs或者samba文件系统，没法修改权限，问题大大
-RUN sed -i 's/user\s*=\s*mysql/user=root/' /etc/mysql/mysql.conf.d/mysqld.cnf && mkdir /var/run/mysqld
 RUN sed -i 's/user\s*=\s*www-data/user=root/' /etc/php/7.4/fpm/pool.d/www.conf
 
 # 安装acme.sh
@@ -25,22 +25,6 @@ RUN cd /tmp && \
     cd acme.sh && \
     ./acme.sh --install
 ENV LE_CONFIG_HOME="/config/acme.sh"
-
-# 安装mysql
-RUN echo 'starting mysqld ...' && \
-    /bin/bash -c "mysqld &" && sleep 5 && \
-    echo 'mysqld started !' && \
-    echo 'create database and create mysql user ...' && \
-    mysql -e "create database proxy_manager; CREATE USER 'root'@'127.0.0.1'; GRANT ALL ON *.* TO  'root'@'127.0.0.1'; FLUSH PRIVILEGES;" && \
-    echo 'database created !' && \
-    echo 'running migrate ...' && \
-    cd /webroot/proxy-manager/ && chmod -R 777 storage && php artisan migrate --force && \
-    echo 'migrated ...' && \
-    killall mysqld
-
-# mysql允许远程连接，只要不映射端口出去也就没事
-RUN sed -i 's/bind-address.*/bind-address=0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
-RUN mv /var/lib/mysql /var/lib/mysql_init && mkdir -p /config/mysql
 
 # SSL 配置
 COPY options-ssl-nginx.conf /etc/nginx/

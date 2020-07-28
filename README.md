@@ -27,11 +27,5 @@ networks:
 有任何疑问，请提Issue
 
 ## todo
-- 证书签发完成自动生成vhost conf，这样就可以即时创建好ssl的vhost，而不用在页面上等
 - 证书签发完成页面通知（websocket）
-- 启动后部署所有vhost，不用映射vhost目录了
 - 缺省页面vhost
-
-## 问题
-- 证书还是没有保存到/acme.sh，是不是因为这个路径是存在~/profile的？
-- 证书创建完成自动开始签发
