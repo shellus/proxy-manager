@@ -9,7 +9,6 @@ services:
     volumes:
       - ./config:/config
       - ./laravel.log:/webroot/proxy-manager/storage/logs/laravel.log
-      - /mnt/www/me/proxy-manager/:/webroot/proxy-manager/
     ports:
       - "80:80"
       - "443:443"
@@ -26,8 +25,8 @@ services:
       - TZ=Asia/Chongqing
     volumes:
       - ./config/mysql:/var/lib/mysql
-    ports:
-      - "3309:3306"
+#    ports:
+#      - "3309:3306"
 
 networks:
   nginx_net:

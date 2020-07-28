@@ -10,10 +10,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # 应用代码下载+安装第三方库
 # TODO 可以考虑用分支部署，或者tag release部署
-RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git && cd proxy-manager && git reset --hard dfae521ffad0d7338b224e185821d412cc18fbcf
+RUN mkdir /webroot && cd /webroot && git clone https://github.com/shellus/proxy-manager.git && cd proxy-manager && git reset --hard v1.0.0
 RUN cd /webroot/proxy-manager && composer install && cp .env.example .env && php artisan key:generate
 
-RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git && cd proxy-manager-vue && git reset --hard 768c44b76b5eb9e6ec206f8c7716a37f15cc2a5d
+RUN cd /webroot/proxy-manager/ && rm -rf proxy-manager-vue && git clone https://github.com/shellus/proxy-manager-vue.git && cd proxy-manager-vue && git reset --hard v1.0.0
 RUN cd /webroot/proxy-manager/proxy-manager-vue && npm install && cp .env.example .env.local && npm run build
 
 # root权限运行一切，不然在ntfs或者samba文件系统，没法修改权限，问题大大
