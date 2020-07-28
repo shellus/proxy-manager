@@ -4,6 +4,8 @@ services:
   proxy-manager:
     image: shellus/proxy-manager
     build: .
+    environment:
+      - TZ=Asia/Chongqing
     volumes:
       - ./config:/config
       - ./laravel.log:/webroot/proxy-manager/storage/logs/laravel.log
@@ -11,7 +13,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "3309:3306"
     networks:
       - default
       - nginx_net
@@ -22,9 +23,11 @@ services:
     environment:
       - MYSQL_DATABASE=proxy_manager
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - TZ=Asia/Chongqing
     volumes:
-      - /tmp/mysql:/var/lib/mysql
-
+      - ./config/mysql:/var/lib/mysql
+    ports:
+      - "3309:3306"
 
 networks:
   nginx_net:

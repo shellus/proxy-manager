@@ -66,13 +66,8 @@ class ProxyLogic
     }
 
     /**
-     * 调用处：
-     * 1：开机部署全部
-     * 2：创建后即时部署
-     * 3：证书签发后事件触发部署
-     * 4：页面点击部署
-     *
      * @param ProxyModel $proxy
+     * @param static::DEPLOY_ $deployTriggerType
      * @throws \Throwable
      */
     public function deploy(ProxyModel $proxy, $deployTriggerType)
@@ -93,7 +88,7 @@ class ProxyLogic
         $conf = NginxVhost::fromModel($proxy);
         try {
             $nginx->generateVhost($proxy->id, $conf);
-            $nginx->reload();
+            $deployTriggerType !== static::DEPLOY_TRIGGER_TYPE_BOOT && $nginx->reload();
         } catch (\Throwable $exception) {
             // 日志
             $log = new ProxyLogModel();
